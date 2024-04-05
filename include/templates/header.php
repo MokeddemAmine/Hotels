@@ -13,7 +13,17 @@
 </head>
 <body>
     <!-- Start the navbar -->
-    <nav>
-
+    <nav class="navbar navbar-expand-md bg-navbar">
+        <div class="container">
+            <a href="index.php" class="navbar-brand"><h1 class="text-capitalize text-dark">hotel</h1></a>
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#menu"><div class="navbar-toggler-icon"></div></button>
+            <div class="collapse navbar-collapse justify-content-end" id="menu">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a id="lang-currency" class="nav-link text-capitalize fw-bold">English</a></li>
+                    <li class="nav-item"><a href="support.php" class="nav-link text-capitalize fw-bold">support</a></li>
+                    <li class="nav-item"><a href="login.php" class="nav-link text-capitalize fw-bold">sign in</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
     <!-- End the navbar -->

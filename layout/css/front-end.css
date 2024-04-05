@@ -1,0 +1,63 @@
+:root{
+    --main-color:#0ecee0;
+    --second-color:#e811fd;
+}
+/* Start main style */
+.text-main-color{
+    color:var(--main-color) !important;
+}
+.text-second-color{
+    color:var(--second-color) !important;
+}
+.bg-main-color{
+    background-color: var(--main-color) !important;
+}
+.bg-second-color{
+    background-color: var(--second-color) !important;
+}
+.bg-navbar{
+    background: -webkit-linear-gradient(top left,var(--main-color) ,var(--second-color) );
+}
+.bg-gradient-page{
+    background: -webkit-radial-gradient(0% 100%,farthest-corner,var(--main-color),var(--second-color));
+}
+.btn-main{
+    background: -webkit-linear-gradient(top left,var(--main-color) ,var(--second-color) );
+    color:white;
+    font-weight: bold;
+    letter-spacing: .25rem;
+}
+/* End main style */
+/* Start login */
+@media (min-width:768px){
+    .form-sign{
+        width:75%;
+    }
+}
+@media (min-width:992px){
+    .form-sign{
+        width:50%;
+    }
+}
+.parent-sign{
+    position:relative; 
+    overflow: hidden;
+}
+.sign-in,.sign-up,.forgot-password{
+    transition: 1s;
+}
+.sign-up{
+    position:absolute;
+    top:0;
+    left:100%;
+    width:100%;
+    height:100%;
+}
+.forgot-password{
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+}
+/* End login */
