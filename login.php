@@ -75,8 +75,8 @@ use function PHPSTORM_META\type;
         }elseif($page == 'signin'){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 
-                $username       = filter_var($_POST['username'],FILTER_SANITIZE_STRING);
-                $password       = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
+                $username       = filter_in('username');
+                $password       = filter_in('password');
 
                 $verifySignin   = $pdo->prepare("SELECT * FROM Users WHERE Password = ? AND (Username = ? OR Email = ?)");
                 $verifySignin->execute([sha1($password),$username,$username]);
@@ -93,7 +93,7 @@ use function PHPSTORM_META\type;
                 redirectPage();
             }
         }elseif($page == 'forgotPassword'){
-            $email      = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
+            $email      = filter_in('email','post','email');
             
             $verifyEmail= query('select','Users',['*'],[$email],['Email']);
             if($verifyEmail->rowCount() == 1){
@@ -136,8 +136,8 @@ use function PHPSTORM_META\type;
                 echo '<div class="alert alert-danger fw-bold">Email Not Exist</div>';
             }
         }elseif($page == 'ResetPassword'){
-            $email      = filter_var(isset($_GET['email'])?$_GET['email']:0,FILTER_SANITIZE_EMAIL);
-            $code       = filter_var(isset($_GET['code'])?$_GET['code']:0,FILTER_SANITIZE_STRING);
+            $email      = filter_in('email','get','email');
+            $code       = filter_in('code','get');
             $verifyCode = query('select','Users',['*'],[$email,$code],['Email','Password_Update']);
             if($verifyCode->rowCount() == 1){
                 ?>
@@ -158,11 +158,11 @@ use function PHPSTORM_META\type;
                 redirectPage();
             }
         }elseif($page == 'UpdatePassword'){
-            $email      = filter_var(isset($_GET['email'])?$_GET['email']:0,FILTER_SANITIZE_EMAIL);
-            $code       = filter_var(isset($_GET['code'])?$_GET['code']:0,FILTER_SANITIZE_STRING);
+            $email      = filter_in('email','get','email');
+            $code       = filter_in('code','get');
 
-            $password   = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
-            $passConfirm= filter_var($_POST['password-confirm'],FILTER_SANITIZE_STRING);
+            $password   = filter_in('password');
+            $passConfirm= filter_in('password-confirm');
 
             $verifyCode = query('select','Users',['*'],[$email,$code],['Email','Password_Update']);
             if($verifyCode->rowCount() == 1){
@@ -190,9 +190,10 @@ use function PHPSTORM_META\type;
                 redirectPage();
             }
         }elseif($page == 'signup'){
-            $email      = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
-            $pass       = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
-            $passConfirm= filter_var($_POST['password-confirm'],FILTER_SANITIZE_STRING);
+
+            $email      = filter_in('email','post','email');
+            $pass       = filter_in('password');
+            $passConfirm= filter_in('password-confirm');
 
             $formError = array();
 
@@ -253,8 +254,9 @@ use function PHPSTORM_META\type;
                 }
             }
         }elseif($page == 'confirmEmail'){
-            $email      = isset($_GET['email'])?filter_var($_GET['email'],FILTER_SANITIZE_EMAIL):0;
-            $code       = isset($_GET['code'])?filter_var($_GET['code'],FILTER_SANITIZE_STRING):0;
+
+            $email      = filter_in('email','get','email');
+            $code       = filter_in('code','get');
             
             $verifyReg  = query('select','Users',['*'],[$email,$code],['Email','Email_Confirm']);
             if($verifyReg->rowCount() == 1){
@@ -282,8 +284,10 @@ use function PHPSTORM_META\type;
                 redirectPage();
             }
         }elseif($page == 'confirmSignUp'){
-            $email      = isset($_GET['email'])?filter_var($_GET['email'],FILTER_SANITIZE_EMAIL):0;
-            $code       = isset($_GET['code'])?filter_var($_GET['code'],FILTER_SANITIZE_STRING):0;
+
+            $email      = filter_in('email','get','email');
+            $code       = filter_in('code','get');
+
             $verifyReg  = query('select','Users',['*'],[$email,$code],['Email','Email_Confirm']);
             if($verifyReg->rowCount() == 1){
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){

@@ -129,3 +129,24 @@
             }
         }
     }
+
+    // function to filter input field
+    // $input : it is the string value of name attribute of the input field
+    // $method : it is the method of the form , get or post
+    // $filter : it is the $filter of filter_var function , it has a default value as you show
+    
+    function filter_in($input,$method = 'post',$filter = FILTER_SANITIZE_STRING){
+        $result = NULL;
+        switch($filter){
+            case 'email':$filter = FILTER_SANITIZE_EMAIL;break;
+            case 'float':$filter = FILTER_SANITIZE_NUMBER_FLOAT;break;
+            case 'int'  :$filter = FILTER_SANITIZE_NUMBER_INT;break;
+            default:$filter = FILTER_SANITIZE_STRING;break;
+        }
+        if($method == 'get'){
+            $result = isset($_GET[$input])?filter_var($_GET[$input],$filter):0;
+        }else{
+            $result = filter_var($_POST[$input],$filter);
+        }
+        return $result;
+    }
