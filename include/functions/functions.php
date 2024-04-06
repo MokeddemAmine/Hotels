@@ -2,15 +2,16 @@
 
     // redirect function to take you in another page after a number of seconds
 
-    function redirectPage ($page = NULL, $seconds = 3){
-        if($page == 'back'){
+    function redirectPage ($page = NULL, $time = 0){
+        if($page == 'back'){// go back to previous page
             if($_SERVER['HTTP_REFERER']){
                 header("Location: ".$_SERVER['HTTP_REFERER']);
+                header("refresh:$time;url=".$_SERVER['HTTP_REFERER']);
             }
         }elseif($page){
-            header("Location: ".$page);
+                header("refresh:$time;url=".$page);
         }else{
-            header("Location: index.php");
+            header("refresh:$time;url=index.php");
         }
         exit();
     }
