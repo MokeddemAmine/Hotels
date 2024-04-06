@@ -72,6 +72,26 @@ use function PHPSTORM_META\type;
 
             </div>
         <?php
+        }elseif($page == 'signin'){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                
+                $username       = filter_var($_POST['username'],FILTER_SANITIZE_STRING);
+                $password       = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
+
+                $verifySignin   = $pdo->prepare("SELECT * FROM Users WHERE Password = ? AND (Username = ? OR Email = ?)");
+                $verifySignin->execute([sha1($password),$username,$username]);
+
+                if($verifySignin->rowCount() == 1){
+                    $user = $verifySignin->fetchObject()->Username;
+                    $_SESSION['username'] = $user;
+                    redirectPage();
+                }else{
+                    echo '<div class="alert alert-danger fw-bold">Username Or Password was incorrect</div>';
+                    redirectPage('back',3);
+                }
+            }else{
+                redirectPage();
+            }
         }elseif($page == 'signup'){
             $email      = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
             $pass       = filter_var($_POST['password'],FILTER_SANITIZE_STRING);

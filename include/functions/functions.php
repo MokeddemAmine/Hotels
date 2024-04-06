@@ -5,7 +5,6 @@
     function redirectPage ($page = NULL, $time = 0){
         if($page == 'back'){// go back to previous page
             if($_SERVER['HTTP_REFERER']){
-                header("Location: ".$_SERVER['HTTP_REFERER']);
                 header("refresh:$time;url=".$_SERVER['HTTP_REFERER']);
             }
         }elseif($page){
