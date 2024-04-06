@@ -92,6 +92,103 @@ use function PHPSTORM_META\type;
             }else{
                 redirectPage();
             }
+        }elseif($page == 'forgotPassword'){
+            $email      = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
+            
+            $verifyEmail= query('select','Users',['*'],[$email],['Email']);
+            if($verifyEmail->rowCount() == 1){
+                $user = $verifyEmail->fetchObject();
+                $code = createID();
+                $mail = new PHPMailer(true);
+
+                try {
+                    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      
+                    $mail->isSMTP();                                           
+                    $mail->Host       = 'smtp.gmail.com';                   
+                    $mail->SMTPAuth   = true;                                 
+                    $mail->Username   = 'mokeddemamine1707@gmail.com';                 
+                    $mail->Password   = 'hfwc pscq lukp gurw';                            
+                    $mail->SMTPSecure = 'ssl';            
+                    $mail->Port       = 465;                                    
+
+                    
+                    $mail->setFrom('mokeddemamine1707@gmail.com', 'Hotels Website');
+                    $mail->addAddress($email);
+                    $mail->addReplyTo('mokeddemamine1707@gmail.com', 'Hotels Website');
+
+                    
+                    $mail->isHTML(true);                                  
+                    $mail->Subject = 'Hotels Reset Password';
+                    $mail->Body    = "<div style='text-align:center;margin:1rem 0;'>
+                    <h2 style='color:#0ecee0;font-weight: bold;'>Hotels Website</h2>
+                    <p style='font-size:1.5rem;'>Welcome $user->Name to your home.</p>
+                    <p style='font-size:1.5rem;'>You can reset your password now. Click on the link below</p>
+                    <a href='hotels.local/login.php?do=ResetPassword&email=$email&code=$code' style='cursor:pointer;background: -webkit-linear-gradient(top left,#0ecee0,#e811fd);padding:.5rem 1rem;text-decoration: none;text-transform: capitalize;border-radius:.5rem;font-weight: bold;'>reset password</a>
+                </div>";
+
+                    $mail->send();
+                    $updatePass = query('update','Users',['Password_Update'],[$code,$email],['Email']);
+                    echo '<div class="alert alert-success fw-bold">Link send to your Email, go it to reset your password</div>';
+                } catch (Exception $e) {
+                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                }
+            }else{
+                echo '<div class="alert alert-danger fw-bold">Email Not Exist</div>';
+            }
+        }elseif($page == 'ResetPassword'){
+            $email      = filter_var(isset($_GET['email'])?$_GET['email']:0,FILTER_SANITIZE_EMAIL);
+            $code       = filter_var(isset($_GET['code'])?$_GET['code']:0,FILTER_SANITIZE_STRING);
+            $verifyCode = query('select','Users',['*'],[$email,$code],['Email','Password_Update']);
+            if($verifyCode->rowCount() == 1){
+                ?>
+                <div class="mx-auto form-sign text-center py-4 bg-white rounded parent-sign">
+                    <div class="px-3 px-sm-5">
+                        <form action="?do=UpdatePassword&email=<?= $email ?>&code=<?= $code ?>" method="POST">
+                            <h2 class="text-capitalize text-dark my-5">reset password</h2>
+                            <input type="password" name="password" placeholder="Enter a password" class="form-control my-4">
+                            <input type="password" name="password-confirm" placeholder="Confirm your password" class="form-control my-4">
+                            <div class="d-grid gap2">
+                                <input type="submit" value="Reset Password" name="sign-up" class="btn btn-main">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <?php
+            }else{
+                redirectPage();
+            }
+        }elseif($page == 'UpdatePassword'){
+            $email      = filter_var(isset($_GET['email'])?$_GET['email']:0,FILTER_SANITIZE_EMAIL);
+            $code       = filter_var(isset($_GET['code'])?$_GET['code']:0,FILTER_SANITIZE_STRING);
+
+            $password   = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
+            $passConfirm= filter_var($_POST['password-confirm'],FILTER_SANITIZE_STRING);
+
+            $verifyCode = query('select','Users',['*'],[$email,$code],['Email','Password_Update']);
+            if($verifyCode->rowCount() == 1){
+                $formError = array();
+
+                if(empty($password)){
+                    $formError[] = '<div class="alert alert-danger fw-bold">Password must be not empty</div>';
+                }elseif(strlen($password) < 8){
+                    $formError[] = '<div class="alert alert-danger fw-bold">Password must has at least 8 characters</div>';
+                }elseif($password != $passConfirm){
+                    $formError[] = '<div class="alert alert-danger fw-bold">Please enter the same password</div>';
+                }
+
+                if(!empty($formError)){
+                    foreach($formError as $error){
+                        echo $error;
+                    }
+                }else{
+                    $updatePass = query('update','Users',['Password','Password_Update'],[sha1($password),1,$email],['Email']);
+                    echo '<div class="alert alert-success fw-bold">Password updated with success</div>';
+                    redirectPage('login.php',3);
+                }
+                
+            }else{
+                redirectPage();
+            }
         }elseif($page == 'signup'){
             $email      = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
             $pass       = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
