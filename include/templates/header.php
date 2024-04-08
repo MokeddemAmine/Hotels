@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="<?= $css ?>fonts/all.min.css"/>
     <!-- include our style -->
     <link rel="stylesheet" href="<?= $css ?>front-end.css"/>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
     <title><?= isset($pageTitle)?$pageTitle:'Hotels'; ?></title>
 </head>
 <body>
@@ -19,9 +20,43 @@
             <button class="navbar-toggler" data-toggle="collapse" data-target="#menu"><div class="navbar-toggler-icon"></div></button>
             <div class="collapse navbar-collapse justify-content-end" id="menu">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a id="lang-currency" class="nav-link text-capitalize fw-bold">English</a></li>
+                    <li class="nav-item d-flex-column languages">
+                        <a class="nav-link text-capitalize fw-bold" data-bs-toggle="collapse" href="#collapseLanguages" aria-expanded="false" aria-controls="collapseLanguages">
+                            English
+                        </a>
+                        <div class="collapse"  id="collapseLanguages">
+                            <div class="card card-body p-0">
+                                <ul class="navbar-nav flex-column text-center">
+                                    <li class="nav-item"><a  class="nav-link text-capitalize fw-bold p-1">arabic</a></li>
+                                    <li class="nav-item"><a  class="nav-link text-capitalize fw-bold p-1">French</a></li>
+                                    <li class="nav-item"><a  class="nav-link text-capitalize fw-bold p-1">Germany</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    
                     <li class="nav-item"><a href="support.php" class="nav-link text-capitalize fw-bold">support</a></li>
-                    <li class="nav-item"><a href="login.php" class="nav-link text-capitalize fw-bold">sign in</a></li>
+                    <?php
+                        if(isset($_SESSION['username'])){
+                            ?>
+                            <li class="nav-item profile">
+                                <a class="nav-link text-capitalize fw-bold" data-bs-toggle="collapse" href="#collapseProfile" aria-expanded="false" aria-controls="collapseProfile"><?= $_SESSION['username'] ?></a>
+                                <div class="collapse"  id="collapseProfile">
+                                    <div class="card card-body p-0">
+                                        <ul class="navbar-nav flex-column text-center">
+                                            <li class="nav-item"><a  class="nav-link text-capitalize fw-bold p-1">profile</a></li>
+                                            <li class="nav-item"><a  class="nav-link text-capitalize fw-bold p-1">settings</a></li>
+                                            <li class="nav-item"><a  class="nav-link text-capitalize fw-bold p-1">log out</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <?php
+                        }else{
+                            echo '<li class="nav-item"><a href="login.php" class="nav-link text-capitalize fw-bold">sign in</a></li>';
+                        }
+                    ?>
+                    
                 </ul>
             </div>
         </div>

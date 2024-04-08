@@ -42,10 +42,10 @@ use function PHPSTORM_META\type;
                             <input type="submit" value="Login" name="sign-in" class="btn btn-main">
                         </div>
                     </form>
-                    <a href="#" class="text-start d-block my-2 text-capitalize text-second-color fw-bold text-decoration-none" id="forget-password">forget password</a>
+                    <a href="#" class="text-start d-block my-2 text-capitalize text-second-color fw-bold text-decoration-none" id="forget-password">forget password</a>        
                     <p class="text-dark my-4">Or login with</p>
                     <div class="d-flex justify-content-between flex-column flex-sm-row px-lg-2 mx-lg-2 ">
-                        <a href="#" class="btn btn-outline-primary my-2 my-sm-0"><i class="fa-brands fa-facebook"></i> Facebook</a>
+                    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="btn btn-outline-primary my-2 my-sm-0"><i class="fa-brands fa-facebook"></i> Facebook</fb:login-button>
                         <a href="#" class="btn btn-outline-secondary my-2 my-sm-0"><i class="fa-brands fa-twitter"></i> Twitter</a>
                         <a href="#" class="btn btn-outline-danger my-2 my-sm-0"><i class="fa-brands fa-google"></i> Gmail</a>
                     </div>
@@ -291,11 +291,11 @@ use function PHPSTORM_META\type;
             $verifyReg  = query('select','Users',['*'],[$email,$code],['Email','Email_Confirm']);
             if($verifyReg->rowCount() == 1){
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                    $username       = filter_var($_POST['username'],FILTER_SANITIZE_STRING);
-                    $name           = filter_var($_POST['name'],FILTER_SANITIZE_STRING);
-                    $type           = filter_var($_POST['type'],FILTER_SANITIZE_STRING);
-                    $birthday       = filter_var($_POST['birthday'],FILTER_SANITIZE_STRING);
-
+ 
+                    $username       = filter_in('username');
+                    $name           = filter_in('name');
+                    $type           = filter_in('type');
+                    $birthday       = filter_in('birthday');
 
                     $formError = array();
 
@@ -339,7 +339,7 @@ use function PHPSTORM_META\type;
         }
         echo '</div>';
     }
-
+    // we must have a live website with hosting and privacy_policy  and terms of services for login with facebook account
     include $templates.'footer.php';
     ob_end_flush();
 ?>
