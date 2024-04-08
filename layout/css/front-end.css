@@ -157,3 +157,8 @@
     position:relative;
 }
 /* End Home Page */
+/* Start footer */
+footer .nav .nav-link{
+    font-size:.75rem;
+}
+/* End footer */
