@@ -61,4 +61,251 @@
             </div>
         </div>
     </nav>
+    <div class="container">
+        <section class="search my-5">
+            <h2 class="text-capitalize mb-3">where to ?</h2>
+            <form action="" method="GET" class="form-inline">
+                <div class="row">
+                    <div class=" col-md col-12 mb-3 mb-md-0 destination">
+                        <input type="text" name="going" placeholder="Going To" class="form-control px-4 h-100">
+                        <i class="fa-solid fa-location-dot location-des"></i>
+                    </div>
+                    <div class=" col-md col-12 mb-3 mb-md-0">
+                        <div class="dates d-flex align-items-center rounded border" type="button" data-bs-toggle="modal" data-bs-target="#calendar-modal">
+                            <i class="fa-regular fa-calendar mx-3 fa-lg"></i>
+                            <div class="dates-info">
+                                <h7 class="text-capitalize fw-bold" style="font-size:.8rem">dates</h7>
+                                <p class="dates-info-changed m-0">7 Apr - 8 Apr</p>
+                            </div>
+                        </div>
+                        <div class="modal fade mt-5" id="calendar-modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button class="btn-close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row text-center global-dates">
+                                            <?php
+                                                $days = ['Monday'=>1,'Tuesday'=>2,'Wednesday'=>3,'Thursday'=>4,'Friday'=>5,'Saturday'=>6,'Sunday'=>7];
+                                                $months = ['January'=>31,'February'=>28,'March'=>31,'April'=>30,'May'=>31,'June'=>30,'July'=>31,'August'=>31,'September'=>30,'October'=>31,'November'=>30,'December'=>31];
+                                                $year = date('Y');
+                                            ?>
+                                            <div class="col-12 py-3">
+                                                <h5><?= date('F'); ?> <?= $year ?></h5>
+                                                <p class="days-name row my-3">
+                                                    <span class="col">M</span>
+                                                    <span class="col">T</span>
+                                                    <span class="col">W</span>
+                                                    <span class="col">T</span>
+                                                    <span class="col">F</span>
+                                                    <span class="col">S</span>
+                                                    <span class="col">S</span>
+                                                </p>
+                                                <?php
+
+                                                    $firstDayOfCurrentMonth = date('l',strtotime(date('Y-m-01')));
+                                                    
+                                                    $nameOfCurrentMonth = date('F');
+                                                    $currentDay = date('j');
+                                                    $currentMonth           = date('F', strtotime('+0 month'));
+                                                    echo $currentMonth;
+                                                    $monthNumber            = date('n', strtotime("$currentMonth 1, $year"));
+
+                                                    $dayNumber = 2;
+                                                    echo '<div class="days-number">';
+                                                        echo '<div class="row my-3">';
+                                                            for($i = 1;$i < 8;$i++){
+                                                                echo '<span class="col">';
+                                                                if($i == $days[$firstDayOfCurrentMonth]){
+                                                                    echo '<span class="';
+                                                                        if($currentDay > 1)
+                                                                        echo ' text-secondary';
+                                                                        elseif($currentDay == 1){
+                                                                            echo ' bg-main-color p-1 m-0 circle can-add';
+                                                                        }
+                                                                    echo '" data-date="'.$year.'-'.$monthNumber.'-1">1</span>';
+                                                                }elseif($i > $days[$firstDayOfCurrentMonth]){
+                                                                    echo '<span class="'; 
+                                                                        if($currentDay > $dayNumber)
+                                                                        echo ' text-secondary';
+                                                                        elseif($currentDay == $dayNumber){
+                                                                            echo ' bg-main-color p-1 m-0 can-add';
+                                                                        }else{
+                                                                            echo ' can-add';
+                                                                        }
+                                                                    echo '" data-date="'.$year.'-'.$monthNumber.'-'.$dayNumber.'">'.$dayNumber.'</span>';
+                                                                    $dayNumber++;
+                                                                }
+                                                                echo '</span>';
+                                                            }
+                                                        echo '</div>';
+                                                        for($j = 1;$j < 4;$j++){
+                                                            echo '<div class="row my-3">';
+                                                                for($i = 1;$i < 8;$i++){
+                                                                    echo '<span class="col"><span class="'; 
+                                                                        if($currentDay > $dayNumber)
+                                                                            echo ' text-secondary';
+                                                                        elseif($currentDay == $dayNumber){
+                                                                            echo ' bg-main-color p-1 m-0 circle can-add';
+                                                                        }else{
+                                                                            echo ' can-add';
+                                                                        }
+                                                                    echo '" data-date="'.$year.'-'.$monthNumber.'-'.$dayNumber.'">'.$dayNumber.'</span></span>';
+                                                                    $dayNumber++;
+                                                                }
+                                                            echo '</div>';
+                                                        }
+                                                        if($months[$nameOfCurrentMonth] >= $dayNumber){
+                                                            echo '<div class="row my-3">';
+                                                                for($i = 1;$i < 8;$i++){
+                                                                    echo '<span class="col">';
+                                                                    if($dayNumber <= $months[$nameOfCurrentMonth]){
+                                                                        echo '<span class="'; 
+                                                                            if($currentDay > $dayNumber)
+                                                                            echo ' text-secondary';
+                                                                            elseif($currentDay == $dayNumber){
+                                                                                echo ' bg-main-color p-1 m-0 circle can-add';
+                                                                            }else{
+                                                                                echo ' can-add';
+                                                                            }
+                                                                        echo '" data-date="'.$year.'-'.$monthNumber.'-'.$dayNumber.'">'.$dayNumber.'</span>';
+                                                                        $dayNumber++;
+                                                                    }
+                                                                    echo '</span>';
+                                                                }
+                                                            echo '</div>';
+                                                        }
+                                                        if($months[$nameOfCurrentMonth] >= $dayNumber){
+                                                            echo '<div class="row my-3">';
+                                                                for($i = 1;$i <= 7;$i++){
+                                                                    echo "<span class='col'>";
+                                                                    
+                                                                        if($dayNumber <= $months[$nameOfCurrentMonth]){
+                                                                            echo '<span class="'; 
+                                                                                if($currentDay > $dayNumber)
+                                                                                echo ' text-secondary';
+                                                                                elseif($currentDay == $dayNumber){
+                                                                                    echo 'bg-main-color p-1 m-0 circle can-add';
+                                                                                }else{
+                                                                                    echo 'can-add';
+                                                                                }
+                                                                            echo '" data-date="'.$year.'-'.$monthNumber.'-'.$dayNumber.'">'.$dayNumber.'</span>';
+                                                                            $dayNumber++;
+                                                                        }else{
+                                                                            
+                                                                        }
+                                                                    echo "</span>";
+                                                                }
+                                                            echo '</div>';
+                                                        }
+                                                    echo '</div>';
+                                                ?>
+                                            </div>
+                                            <?php
+                                            for($m = 1; $m < 18 ; $m++){
+                                                
+                                                $currentMonth           = date('F', strtotime('+'.$m.' month'));
+                                                $currentYear            = $currentMonth == 'January'?++$year:$year;
+                                                $monthNumber            = date('n', strtotime("$currentMonth 1, $currentYear"));
+                                                $firstDayOfCurrentMonth = date('l', mktime(0, 0, 0, $monthNumber, 1, $currentYear));
+
+                                                ?>
+                                            <div class="col-12 py-3">
+                                                <h5><?= $currentMonth; ?> <?= $currentYear; ?></h5>
+                                                <p class="days-name row my-3">
+                                                    <span class="col">M</span>
+                                                    <span class="col">T</span>
+                                                    <span class="col">W</span>
+                                                    <span class="col">T</span>
+                                                    <span class="col">F</span>
+                                                    <span class="col">S</span>
+                                                    <span class="col">S</span>
+                                                </p>
+                                                <?php
+
+                                                    
+
+                                                    $dayNumber = 2;
+                                                    echo '<div class="days-number">';
+                                                        echo '<div class="row my-3">';
+                                                            for($i = 1;$i < 8;$i++){
+                                                                echo '<span class="col">';
+                                                                if($i == $days[$firstDayOfCurrentMonth]){
+                                                                    echo '<span class="can-add" data-date="'.$currentYear.'-'.$monthNumber.'-1">1</span>';
+
+                                                                }elseif($i > $days[$firstDayOfCurrentMonth]){
+                                                                    echo '<span class="can-add" data-date="'.$currentYear.'-'.$monthNumber.'-'.$dayNumber.'">'.$dayNumber.'</span>';
+                                                                    $dayNumber++;
+                                                                }
+                                                                echo '</span>';
+                                                            }
+                                                        echo '</div>';
+                                                        for($j = 1;$j < 4;$j++){
+                                                            echo '<div class="row my-3">';
+                                                                for($i = 1;$i < 8;$i++){
+                                                                    echo '<span class="col"><span class="can-add" data-date="'.$currentYear.'-'.$monthNumber.'-'.$dayNumber.'">'.$dayNumber.'</span></span>';
+                                                                    $dayNumber++;
+                                                                }
+                                                            echo '</div>';
+                                                        }
+                                                        if($months[$currentMonth] >= $dayNumber){
+                                                            echo '<div class="row my-3">';
+                                                                for($i = 1;$i < 8;$i++){
+                                                                    echo '<span class="col">';
+                                                                    if($dayNumber <= $months[$currentMonth]){
+                                                                        echo '<span class="can-add" data-date="'.$currentYear.'-'.$monthNumber.'-'.$dayNumber.'">'.$dayNumber.'</span>';
+                                                                        $dayNumber++;
+                                                                    }
+                                                                    echo '</span>';
+                                                                }
+                                                            echo '</div>';
+                                                        }
+                                                        if($months[$currentMonth] >= $dayNumber){
+                                                            echo '<div class="row my-3">';
+                                                                for($i = 1;$i < 8;$i++){
+                                                                    echo '<span class="col"';
+                                                                    if($dayNumber <= $months[$currentMonth]){
+                                                                        echo '<span class="can-add" data-date="'.$currentYear.'-'.$monthNumber.'-'.$dayNumber.'">'.$dayNumber.'</span>';
+                                                                        $dayNumber++;
+                                                                    }
+                                                                    echo '</span>';
+                                                                }
+                                                            echo '</div>';
+                                                        }
+                                                    echo '</div>';
+                                                ?>
+                                            </div>
+                                                <?php
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="d-grid gap-2 flex-grow-1">
+                                            <input type="submit" value="Done" class="btn btn-block btn-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md col-12 mb-3 mb-md-0">
+                        <div class="travellers d-flex align-items-center rounded border">
+                            <i class="fa-solid fa-user mx-3 fa-lg"></i>
+                            <div class="travellers-info">
+                                <h7 class="text-capitalize fw-bold" style="font-size:.8rem;">travellers</h7>
+                                <p class="travellers-info-changed m-0">2 travellers, 1 room</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-1 col-12 mb-3 mb-md-0">
+                        <div class="d-grid gap-2">
+                            <input type="submit" value="Search" class="btn btn-primary btn-lg">
+                        </div>  
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
     <!-- End the navbar -->

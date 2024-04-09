@@ -424,4 +424,26 @@ $(document).ready(function(){
             );
         }
     }
+
+    // toggle the dates choices 
+    $('.can-add').click(function(){
+        // test if the current day has active-start-date class:
+        let verifyCurrentDay = $(this).hasClass('active-start-date');
+        // verify if all others day has active-start-date class:
+        let verifySiblingsDay = $(this).parents('.global-dates').find('.can-add').hasClass('active-start-date');
+        // verify if one of all days has active-end-date class:
+        let verifyEndDay = $(this).parents('.global-dates').find('.can-add').hasClass('active-end-date');
+        console.log(verifyEndDay)
+        if((!verifyCurrentDay && !verifySiblingsDay)){
+            $(this).addClass('active-start-date');
+        }
+        else if(verifySiblingsDay && !verifyCurrentDay && !verifyEndDay){
+            $(this).addClass('active-end-date');
+        }
+        else if(verifyEndDay){
+            $('.global-dates').find('.can-add').removeClass('active-start-date');
+            $('.global-dates').find('.can-add').removeClass('active-end-date');
+            $(this).addClass('active-start-date');
+        }
+    })
 })

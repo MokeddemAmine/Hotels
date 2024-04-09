@@ -5,40 +5,6 @@
     include 'init.php';
     ?>
     <div class="container">
-        <section class="search my-5">
-            <h2 class="text-capitalize mb-3">where to ?</h2>
-            <form action="" method="GET" class="form-inline">
-                <div class="row">
-                    <div class=" col-md col-12 mb-3 mb-md-0 destination">
-                        <input type="text" name="going" placeholder="Going To" class="form-control px-4 h-100">
-                        <i class="fa-solid fa-location-dot location-des"></i>
-                    </div>
-                    <div class=" col-md col-12 mb-3 mb-md-0">
-                        <div class="dates d-flex align-items-center rounded border">
-                            <i class="fa-regular fa-calendar mx-3 fa-lg"></i>
-                            <div class="dates-info">
-                                <h7 class="text-capitalize fw-bold" style="font-size:.8rem">dates</h7>
-                                <p class="dates-info-changed m-0">7 Apr - 8 Apr</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class=" col-md col-12 mb-3 mb-md-0">
-                        <div class="travellers d-flex align-items-center rounded border">
-                            <i class="fa-solid fa-user mx-3 fa-lg"></i>
-                            <div class="travellers-info">
-                                <h7 class="text-capitalize fw-bold" style="font-size:.8rem;">travellers</h7>
-                                <p class="travellers-info-changed m-0">2 travellers, 1 room</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class=" col-md-1 col-12 mb-3 mb-md-0">
-                        <div class="d-grid gap-2">
-                            <input type="submit" value="Search" class="btn btn-primary btn-lg">
-                        </div>  
-                    </div>
-                </div>
-            </form>
-        </section>
         <section class="features my-5">
             <div class="row bg-gradient-page rounded-mine py-2 px-4 align-items-center">
                 <div class="col-md-6 col-lg-3">

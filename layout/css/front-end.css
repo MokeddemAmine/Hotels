@@ -30,6 +30,9 @@
 .rounded-mine{
     border-radius:2rem !important; 
 }
+.circle{
+    border-radius:50% !important;
+}
 /* End main style */
 /* Start header */
 .languages, .profile {
@@ -44,6 +47,19 @@
 #collapseProfile{
     left:0;
     width:100%;
+}
+.can-add:hover{
+    border: 1px solid var(--second-color);
+    border-radius: 50%;
+    padding: .5rem;
+    cursor:pointer;
+}
+.active-start-date, .active-end-date{
+    background-color: var(--second-color);
+    border:none;
+    color:white;
+    border-radius:50%;
+    padding:.5rem;
 }
 /* End header */
 /* Start login */
