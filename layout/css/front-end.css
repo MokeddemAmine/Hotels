@@ -54,13 +54,27 @@
     padding: .5rem;
     cursor:pointer;
 }
-.active-start-date, .active-end-date{
-    background-color: var(--second-color);
+.active-start-date, .active-end-date, .active-among-date{
+    background-color: var(--second-color) !important;
     border:none;
     color:white;
     border-radius:50%;
     padding:.5rem;
 }
+.active-among-date{
+    opacity:.3;
+}
+@media (max-width:556px){
+    #calendar-modal .col{
+        padding:.1rem !important;
+    }
+}
+@media (max-width:380px){
+    #calendar-modal{
+        font-size:.6rem;
+    }
+}
+
 /* End header */
 /* Start login */
 @media (min-width:768px){

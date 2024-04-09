@@ -75,11 +75,11 @@
                             <i class="fa-regular fa-calendar mx-3 fa-lg"></i>
                             <div class="dates-info">
                                 <h7 class="text-capitalize fw-bold" style="font-size:.8rem">dates</h7>
-                                <p class="dates-info-changed m-0">7 Apr - 8 Apr</p>
+                                <p class="dates-info-changed m-0"><?= date('m-d'); ?> - <?php $today = new DateTime(); $nextDay = $today->modify('+1 day'); echo $nextDay->format('m-d'); ?></p>
                             </div>
                         </div>
-                        <div class="modal fade mt-5" id="calendar-modal">
-                            <div class="modal-dialog">
+                        <div class="modal fade mt-1" id="calendar-modal">
+                            <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button class="btn-close" data-dismiss="modal">&times;</button>

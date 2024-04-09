@@ -433,17 +433,49 @@ $(document).ready(function(){
         let verifySiblingsDay = $(this).parents('.global-dates').find('.can-add').hasClass('active-start-date');
         // verify if one of all days has active-end-date class:
         let verifyEndDay = $(this).parents('.global-dates').find('.can-add').hasClass('active-end-date');
-        console.log(verifyEndDay)
+
+        
+        
         if((!verifyCurrentDay && !verifySiblingsDay)){
             $(this).addClass('active-start-date');
-        }
-        else if(verifySiblingsDay && !verifyCurrentDay && !verifyEndDay){
-            $(this).addClass('active-end-date');
-        }
-        else if(verifyEndDay){
+        }else if(verifySiblingsDay && !verifyCurrentDay && !verifyEndDay){
+            // search the element has active-start-date and get its date
+            let date1 = $('.global-dates').find('.active-start-date').data('date');
+            // get date of current element
+            let date2 = $(this).data('date');
+            
+            if(dateSmaller(date1,date2)){
+                $(this).addClass('active-end-date');
+
+                let dateAmong = $('.global-dates').find('.can-add').each(function(index,element){
+                    if(dateSmaller(date1,$(this).data('date')) && dateSmaller($(this).data('date'),date2)){
+                        $(this).addClass('active-among-date');
+                    }
+                    
+                })
+
+            }else{
+                $('.global-dates').find('.can-add').removeClass('active-start-date');
+                $(this).addClass('active-start-date');
+            }
+            
+        }else if(verifyEndDay){
             $('.global-dates').find('.can-add').removeClass('active-start-date');
             $('.global-dates').find('.can-add').removeClass('active-end-date');
+            $('.global-dates').find('.can-add').removeClass('active-among-date');
             $(this).addClass('active-start-date');
         }
+        
     })
+    // function to compare two date 
+    function dateSmaller($date1, $date2) {
+        $dt1 = new Date($date1);
+        $dt2 = new Date($date2);
+        
+        if ($dt1 < $dt2) {
+            return true;
+        } else{
+            return false;
+        }
+    }
 })
