@@ -24,7 +24,6 @@ $(document).ready(function(){
     // divise the content of carousel of discover relation with body screen
     
     var webWidth = $('body .container').outerWidth();
-    console.log(webWidth)
 
     let discoverNames = ['All inclusive','Sea view','Resort','Pool','Pet friendly','Apartment','Apart hotel','Spa','Villa','Waterpark'];
     var active = 'carousel-item';
@@ -478,4 +477,11 @@ $(document).ready(function(){
             return false;
         }
     }
+
+    // print date when click done
+    $('#done-date').click(function(){
+        if($('.global-dates').find('.can-add').hasClass('active-start-date') && $('.global-dates').find('.can-add').hasClass('active-end-date')){
+            $('.dates-info-changed').text($('.active-start-date').data('date')+' - '+$('.active-end-date').data('date'));
+        }
+    })
 })
