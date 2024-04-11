@@ -484,4 +484,130 @@ $(document).ready(function(){
             $('.dates-info-changed').text($('.active-start-date').data('date')+' - '+$('.active-end-date').data('date'));
         }
     })
+    // toggle the traveller input field
+    $('.travellers').click(function(){
+        $('#travellers-details').toggle()
+    })
+    $("body").click(function(event){
+        if (!$(event.target).closest('.travellers-room, .remove-room').length) {
+            $('#travellers-details').hide()
+        }
+    });
+    $('#done-travellers').click(function(){
+        $('#travellers-details').hide()
+    })
+    // add room in traveller input
+    const room = $('.room:first-child .room-content').html();
+    let roomNumber = 2;
+    let travellers = 1;
+    $('#add-another-room').click(function(){
+        
+        updateRoom = '<div class="room-content">'+room+'</div>';
+        updateRoom = '<h6>Room '+roomNumber+'</h6>'+updateRoom;
+        var newRoom = '<div class="room" data-room="'+roomNumber+'">'+updateRoom+'</div>';
+        $(this).parent().before(newRoom);
+        // add rooms number the input field result
+        $('.room-number').text(roomNumber+ ' rooms');
+        // add travellers number the input field result
+        
+        travellers++;
+        $('.traveller-number').text(travellers+' travellers');
+        
+        roomNumber++;
+        if(roomNumber > 2){
+            $('.remove-room').parent().css('display','block');
+        }
+
+        // remove previous clicks 
+        $('.remove-room').off('click');
+        // use the new clicks
+        $('.remove-room').click(function(e){
+            e.preventDefault();
+            // decrease the number of travellers
+            let trr = 0;
+            $(this).parents('.room-content').find('.number-adults, .number-children').each(function(){
+                trr += parseInt($(this).text());
+            })
+            travellers = travellers - trr;
+            $('.traveller-number').text(travellers+' travellers');
+            // edit all the next .room element : minus data-room by 1
+            // delete the current room
+            if($(this).parents('.room').next('.room').length){
+                $(this).parents('.room').nextAll('.room').each(function(){
+                    $(this).attr('data-room',$(this).attr('data-room')-1);
+                    $(this).children('h6').html('<h6>Room '+$(this).attr('data-room')+'</h6>');
+                    
+                })
+            }
+            $(this).parents('.room').remove();
+            roomNumber--;
+            if(roomNumber == 2){
+                $('.room-number').text('1 room');
+            }else{
+                $('.room-number').text(roomNumber - 1 +' rooms');
+            }
+
+            if($('.room').length == 1){
+                $('.remove-room').parent().css('display','none');
+            }
+            
+            
+        })
+
+        $('.minus-btn').off('click');
+        $('.plus-btn').off('click');
+        // increase and decrease number adults and children
+        $('.minus-btn').click(function(){
+            if($(this).next().hasClass('number-adults') && $(this).next('.number-adults').text() > 1){
+                $(this).next('.number-adults').text($(this).next('.number-adults').text() - 1);
+                travellers--;
+            }
+            else if($(this).next().hasClass('number-children') && $(this).next('.number-children').text() > 0){
+                $(this).next('.number-children').text($(this).next('.number-children').text() - 1);
+                travellers--;
+            }  
+            if(travellers > 1){
+                $('.traveller-number').text(travellers+' travellers');
+            }else{
+                $('.traveller-number').text(travellers+' traveller');
+            }
+        })
+        $('.plus-btn').click(function(){
+            if($(this).prev().text() < 9){
+                console.log($(this).prev());
+                $(this).prev().text(parseInt($(this).prev().text()) + 1);
+                travellers++;
+            } 
+            $('.traveller-number').text(travellers+' travellers');
+        })
+        
+        
+    })
+    
+    // increase and decrease number adults and children
+    $('.minus-btn').click(function(){
+        if($(this).next().hasClass('number-adults') && $(this).next('.number-adults').text() > 1){
+            $(this).next('.number-adults').text($(this).next('.number-adults').text() - 1);
+            travellers--;
+        }else if($(this).next().hasClass('number-children') && $(this).next('.number-children').text() > 0){
+            $(this).next('.number-children').text($(this).next('.number-children').text() - 1);
+            travellers--;
+        } 
+        if(travellers > 1){
+            $('.traveller-number').text(travellers+' travellers');
+        }else{
+            $('.traveller-number').text(travellers+' traveller');
+        }
+        
+    })
+    $('.plus-btn').click(function(){
+        if($(this).prev().text() < 9){
+            console.log($(this).prev());
+            $(this).prev().text(parseInt($(this).prev().text()) + 1);
+        } 
+        travellers++;
+        $('.traveller-number').text(travellers+' travellers');
+    })
+    
+    
 })

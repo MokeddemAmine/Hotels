@@ -70,7 +70,7 @@
                         <input type="text" name="place" placeholder="Going To" class="form-control px-4 h-100">
                         <i class="fa-solid fa-location-dot location-des"></i>
                     </div>
-                    <div class=" col-md col-12 mb-3 mb-md-0">
+                    <div class="col-md col-12 mb-3 mb-md-0">
                         <div class="dates d-flex align-items-center rounded border" type="button" data-bs-toggle="modal" data-bs-target="#calendar-modal">
                             <i class="fa-regular fa-calendar mx-3 fa-lg"></i>
                             <div class="dates-info">
@@ -79,7 +79,7 @@
                             </div>
                         </div>
                         <div class="modal fade mt-1" id="calendar-modal">
-                            <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-dialog modal-dialog-scrollable modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -290,13 +290,48 @@
                             </div>
                         </div>
                     </div>
-                    <div class=" col-md col-12 mb-3 mb-md-0">
-                        <div class="travellers d-flex align-items-center rounded border">
+                    <div class="col-md col-12 mb-3 mb-md-0 travellers-room">
+                        <div class="travellers d-flex align-items-center rounded border" style="cursor:pointer;">
                             <i class="fa-solid fa-user mx-3 fa-lg"></i>
                             <div class="travellers-info">
                                 <h7 class="text-capitalize fw-bold" style="font-size:.8rem;">travellers</h7>
-                                <p class="travellers-info-changed m-0">2 travellers, 1 room</p>
+                                <p class="travellers-info-changed m-0"> 
+                                    <span class="traveller-number">1 traveller</span>, <span class="room-number">1 room</span>
+                                </p>
                             </div>
+                        </div>
+                        <div id="travellers-details" class="bg-light p-3 mt-2 rounded" style="display:none;">
+                            <div class="room" data-room="1">
+                                <h6>Room 1</h6>
+                                <div class="room-content">
+                                    <div class="adults my-4 d-flex justify-content-between">
+                                        <h6>Adults</h6>
+                                        <div class="adults-number">
+                                            <span class="minus-btn">-</span>
+                                            <span class="number-adults">1</span>
+                                            <span class="plus-btn">+</span>
+                                        </div>
+                                    </div>
+                                    <div class="children my-4 d-flex justify-content-between">
+                                        <h6>Children</h6>
+                                        <div class="children-number">
+                                            <span class="minus-btn disable">-</span>
+                                            <span class="number-children">0</span>
+                                            <span class="plus-btn">+</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end" style="display:none">
+                                        <button type="button" class="btn btn-outline-primary btn-sm fw-bold remove-room" >Remove room</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-end my-3">
+                                <button type="button" id="add-another-room" class="btn btn-outline-primary btn-sm fw-bold">Add another room</button>
+                            </div>
+                            <div class="text-end ">
+                                <button type="button" id="done-travellers" class="btn btn-primary">Done</button>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class=" col-md-1 col-12 mb-3 mb-md-0">

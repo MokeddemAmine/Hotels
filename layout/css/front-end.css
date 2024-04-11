@@ -74,7 +74,30 @@
         font-size:.6rem;
     }
 }
-
+.minus-btn, .plus-btn{
+    border:1px solid black;
+    line-height:.2rem;
+    padding-left:.5rem;
+    padding-right:.5rem;
+    padding-bottom:.3rem;
+    border-radius:50%;
+    margin:0 .5rem;
+    cursor:pointer;
+}
+.minus-btn:hover, .plus-btn:hover{
+    background-color: var(--main-color);
+    opacity:.1;
+}
+.travellers-room{
+    position:relative;
+}
+#travellers-details {
+    position:absolute;
+    top:100%;
+    left:0;
+    width:100%;
+    z-index:2;
+}
 /* End header */
 /* Start login */
 @media (min-width:768px){
