@@ -569,16 +569,16 @@ $(document).ready(function(){
             if(travellers > 1){
                 $('.traveller-number').text(travellers+' travellers');
             }else{
-                $('.traveller-number').text(travellers+' traveller');
+                $('.traveller-number').text('1 traveller');
             }
         })
         $('.plus-btn').click(function(){
             if($(this).prev().text() < 9){
-                console.log($(this).prev());
                 $(this).prev().text(parseInt($(this).prev().text()) + 1);
                 travellers++;
+                $('.traveller-number').text(travellers+' travellers');
             } 
-            $('.traveller-number').text(travellers+' travellers');
+            
         })
         
         
@@ -604,9 +604,11 @@ $(document).ready(function(){
         if($(this).prev().text() < 9){
             console.log($(this).prev());
             $(this).prev().text(parseInt($(this).prev().text()) + 1);
+            travellers++;
+            $('.traveller-number').text(travellers+' travellers');
         } 
-        travellers++;
-        $('.traveller-number').text(travellers+' travellers');
+        
+        
     })
     
     
