@@ -2,6 +2,7 @@
     ob_start();
     session_start();
     $pageTitle = 'Hotels - Reservation From Luxury Hotels';
+    $search = 'include';
     include 'init.php';
     ?>
     <div class="container">
@@ -80,6 +81,7 @@
         </section>
     </div>
     <?php
+    $groupMedia = 'include';
     include $templates.'footer.php';
     ob_end_flush();
 ?>

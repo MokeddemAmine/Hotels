@@ -13,6 +13,7 @@
     <title><?= isset($pageTitle)?$pageTitle:'Hotels'; ?></title>
 </head>
 <body>
+    
     <!-- Start the navbar -->
     <nav class="navbar navbar-expand-md bg-navbar">
         <div class="container">
@@ -38,15 +39,20 @@
                     <li class="nav-item"><a href="support.php" class="nav-link text-capitalize fw-bold">support</a></li>
                     <?php
                         if(isset($_SESSION['username'])){
+                            
                             ?>
                             <li class="nav-item profile">
                                 <a class="nav-link text-capitalize fw-bold" data-bs-toggle="collapse" href="#collapseProfile" aria-expanded="false" aria-controls="collapseProfile"><?= $_SESSION['username'] ?></a>
                                 <div class="collapse"  id="collapseProfile">
                                     <div class="card card-body p-0">
                                         <ul class="navbar-nav flex-column text-center">
-                                            <li class="nav-item"><a  class="nav-link text-capitalize fw-bold p-1">profile</a></li>
-                                            <li class="nav-item"><a  class="nav-link text-capitalize fw-bold p-1">settings</a></li>
-                                            <li class="nav-item"><a  class="nav-link text-capitalize fw-bold p-1">log out</a></li>
+                                            <li class="nav-item"><a href="account.php"  class="nav-link text-capitalize fw-bold p-1">account</a></li>
+                                            <?php if($getUser->Type == 'seller'){ ?>
+                                                <li class="nav-item"><a href="product.php"  class="nav-link text-capitalize fw-bold p-1">products</a></li>
+                                            <?php }else{  ?>
+                                                <li class="nav-item"><a href="activity.php"  class="nav-link text-capitalize fw-bold p-1">activities</a></li>
+                                            <?php } ?>
+                                            <li class="nav-item"><a href="logout.php" class="nav-link text-capitalize fw-bold p-1">log out</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -61,6 +67,7 @@
             </div>
         </div>
     </nav>
+    <?php if(isset($search)){ ?>
     <div class="container">
         <section class="search my-5">
             <h2 class="text-capitalize mb-3">where to ?</h2>
@@ -343,4 +350,5 @@
             </form>
         </section>
     </div>
+    <?php } ?>
     <!-- End the navbar -->

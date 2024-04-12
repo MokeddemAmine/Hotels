@@ -9,6 +9,15 @@
     $uploads    = 'data/uploads/';
 
     include $functions.'functions.php';
+
+    $getUser = NULL;
+    if(isset($_SESSION['username'])){
+        $getUser = query('select','Users',['*'],[$_SESSION['username']],['Username'])->fetchObject();
+    }
+
+
     include $templates.'header.php';
+
+    
 
 ?>

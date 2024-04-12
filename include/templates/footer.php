@@ -2,6 +2,7 @@
 
     <footer>
         <div class="container">
+            <?php if(isset($groupMedia)){ ?>
             <h2 class="text-second-color text-capitalize text-dark">hotels group media</h2>
             <div class="row ">
                 <div class="col-sm-6 col-md-4 col-lg-2">
@@ -67,6 +68,7 @@
                     </ul>
                 </div>
             </div>
+            <?php } ?>
             <hr class="my-4">
             <div class="copyrigth mb-3 text-center">
                 &copy; 2024 Hotels.local is an X group company. All rights reserved
