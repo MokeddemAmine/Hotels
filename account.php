@@ -66,7 +66,7 @@
                                 <div class="basic-info my-5">
                                     <div class="d-flex justify-content-between mb-3">
                                         <h3 class="text-capitalize">basic information</h3>
-                                        <a href="?edit=basic_info" class="btn btn-white text-second-color fw-bold">Edit</a>
+                                        <a href="?do=edit_basic_info" class="btn btn-white text-second-color fw-bold">Edit</a>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -86,7 +86,7 @@
                                 <div class="contact-info my-5">
                                     <div class="d-flex justify-content-between mb-3">
                                         <h3 class="text-capitalize">contact</h3>
-                                        <a href="?edit=contact_info" class="btn btn-white text-second-color fw-bold">Edit</a>
+                                        <a href="?do=edit_contact_info" class="btn btn-white text-second-color fw-bold">Edit</a>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -119,7 +119,7 @@
                                             <i class="fa-solid fa-chevron-right"></i>
                                         </div>
                                     </a>
-                                    <a href="?do=changeEmail" class="d-block rounded border p-3 text-dark text-decoration-none my-3" style="width:414px; max-width:100%;">
+                                    <a href="?do=changePassword" class="d-block rounded border p-3 text-dark text-decoration-none my-3" style="width:414px; max-width:100%;">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div>
                                                 <p class="m-0">Change Password</p>
@@ -179,6 +179,62 @@
                                         </a>
                                     </li>
                                 </ul>
+                                <?php
+                            }elseif($page == 'edit_basic_info'){
+                                ?>
+                                    <h3 class="text-center my-4">Basic Information</h3>
+                                    <form action="?do=update_basic_info" method="post" class="mx-auto" style="width:414px;max-width:100%;">
+                                        <label class="fw-bold my-3">Name</label>
+                                        <input type="text" name="name" value="<?= $getUser->Name ?>" class="form-control">
+                                        <label class="fw-bold my-3">Date of Birth</label>
+                                        <input type="date" name="birthday" value="<?= $getUser->Birthday ?>"  class="form-control">
+                                        <label class="fw-bold my-3">Bio</label>
+                                        <input type="text" name="bio" class="form-control">
+                                        <label class="fw-bold my-3">Gender</label>
+                                        <select name="gender" class="form-select">
+                                            <option hidden>Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                        <input type="submit" value="Update" class="w-100 my-4 btn btn-main btn-sm">
+                                    </form>
+                                <?php
+                            }elseif($page == 'edit_contact_info'){
+                                ?>
+                                    <h3 class="text-center my-4">Contact Information</h3>
+                                    <form action="?do=update_contact_info" method="post" class="mx-auto" style="width:414px;max-width:100%;">
+                                        <label class="fw-bold my-3">Mobile Number</label>
+                                        <input type="text" name="mobile" class="form-control">
+                                        <label class="fw-bold my-3">Email</label>
+                                        <input type="email" name="email" value="<?= $getUser->Email ?>"  class="form-control">
+                                        <label class="fw-bold my-3">Address</label>
+                                        <input type="text" name="address" class="form-control">
+                                        <label class="fw-bold my-3">Emergency Contact</label>
+                                        <input type="text" name="emergency_contact" class="form-control">
+                                        <input type="submit" value="Update" class="w-100 my-4 btn btn-main btn-sm">
+                                    </form>
+                                <?php
+                            }elseif($page == 'changeEmail'){
+                                ?>
+                                    <h3 class="text-center my-4">Change Email</h3>
+                                    <form action="?do=updateEmail" method="post" class="mx-auto" style="width:414px;max-width:100%;">
+                                        <label class="fw-bold my-3">Email</label>
+                                        <input type="email" name="mobile" value="<?= $getUser->Email ?>" class="form-control">
+                                        <input type="submit" value="Update" class="w-100 my-4 btn btn-main btn-sm">
+                                    </form>
+                                <?php
+                            }elseif($page == 'changePassword'){
+                                ?>
+                                    <h3 class="text-center my-4">Password</h3>
+                                    <form action="?do=updateEmail" method="post" class="mx-auto" style="width:414px;max-width:100%;">
+                                        <label class="fw-bold my-3">Current Password</label>
+                                        <input type="password" name="current_password" class="form-control">
+                                        <label class="fw-bold my-3">New Password</label>
+                                        <input type="password" name="new_password" class="form-control">
+                                        <label class="fw-bold my-3">Repeat New Password</label>
+                                        <input type="password" name="repeat_password" class="form-control">
+                                        <input type="submit" value="Update" class="w-100 my-4 btn btn-main btn-sm">
+                                    </form>
                                 <?php
                             }
                         ?>

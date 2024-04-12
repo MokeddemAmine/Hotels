@@ -35,6 +35,18 @@
                 CONSTRAINT UsersPK PRIMARY KEY (UserID)
             )");
             $query->execute();
+            $query = $pdo->prepare('CREATE TABLE Users_Plus(
+                UserID INT AUTO_INCREMENT NOT NULL,
+                Bio TEXT,
+                Gender VARCHAR(10),
+                Mobile VARCHAR(15),
+                Address TEXT,
+                Emergency_Contact VARCHAR(30),
+                Payments VARCHAR(50),
+                CONSTRAINT UsersPlusPK PRIMARY KEY (UserID),
+                CONSTRAINT UserIDFK FOREIGN KEY (UserID) REFERENCES Users (UserID)
+            )');
+            $query->execute();
         }
     }
 ?>
