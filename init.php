@@ -13,6 +13,12 @@
     $getUser = NULL;
     if(isset($_SESSION['username'])){
         $getUser = query('select','Users',['*'],[$_SESSION['username']],['Username'])->fetchObject();
+        $getUserPlus = query('select','Users_Plus',['*'],[$getUser->UserID],['UserID']);
+        if($getUserPlus->rowCount()){
+            $getUserPlus = $getUserPlus->fetchObject();
+        }else{
+            $getUserPlus = NULL;
+        }
     }
 
 

@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    // confirm the deletion
+    $('.confirm-delete').click(function(){
+        return confirm("You sure want to delete this ?");
+    })
     // hide placeholder when focus and blur on a input form
 
     // take the right height and width for login form
