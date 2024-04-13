@@ -618,6 +618,7 @@ $(document).ready(function(){
     // repare the height of the info details in account.php
     if($('body').width() >= 768){
         $('.account-details').height($('body').height() - $('nav').height());
+        $('.our-hotels').height(500);
     }
 
     

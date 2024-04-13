@@ -47,6 +47,52 @@
                 CONSTRAINT UserIDFK FOREIGN KEY (UserID) REFERENCES Users (UserID)
             )');
             $query->execute();
+            $query = $pdo->prepare('CREATE TABLE Hotels(
+                HotelID INT AUTO_INCREMENT NOT NULL,
+                Name	VARCHAR(50) NOT NULL,
+                Description	TEXT,
+                Country VARCHAR(30) NOT NULL,
+                State VARCHAR(30) NOT NULL,
+                City VARCHAR(30) NOT NULL,
+                Street TEXT NOT NULL,
+                Languages TEXT NOT NULL,
+                Size INT NOT NULL,
+                Photos TEXT NOT NULL,
+                UserID INT NOT NULL,
+                CONSTRAINT HotelsPK PRIMARY KEY (HotelID),
+                CONSTRAINT UserIDhotelFK FOREIGN KEY (UserID) REFERENCES Users (UserID) 
+            )');
+            $query->execute();
+            $query = $pdo->prepare('CREATE TABLE Rooms (
+                RoomID INT AUTO_INCREMENT NOT NULL,
+                Type VARCHAR(20) NOT NULL,
+                Description TEXT NOT NULL,
+                rate Float,
+                HotelID INT NOT NULL,
+                CONSTRAINT RoomPK PRIMARY KEY (RoomID),
+                CONSTRAINT ROOMFK FOREIGN KEY (HotelID) REFERENCES Hotels (HotelID)
+            )');
+            $query->execute();
+            $query = $pdo->prepare('CREATE TABLE Amenities(
+                AmenityID INT AUTO_INCREMENT NOT NULL,
+                Wifi TINYINT DEFAULT 0,
+                Breakfast TINYINT DEFAULT 0,
+                Parking TINYINT DEFAULT 0,
+                Fitness TINYINT DEFAULT 0,
+                24H_FrontDesk TINYINT DEFAULT 0,
+                RoomService TINYINT DEFAULT 0,
+                Housekeeping TINYINT DEFAULT 0,
+                   AirConditioning TINYINT DEFAULT 0,
+                InRoom TINYINT DEFAULT 0,
+                BusinessCenter TINYINT DEFAULT 0,
+                Restaurant TINYINT DEFAULT 0,
+                PetFriendly TINYINT DEFAULT 0,
+                Laundry TINYINT DEFAULT 0,
+                HotelID INT NOT NULL,
+                CONSTRAINT AmenitiesPK PRIMARY KEY (AmenityID),
+                CONSTRAINT AmenitiesFK FOREIGN KEY (HotelID) REFERENCES Hotels (HotelID)
+            )');
+            $query->execute();
         }
     }
 ?>
