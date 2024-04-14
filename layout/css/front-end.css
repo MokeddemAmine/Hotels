@@ -215,3 +215,31 @@ footer .nav .nav-link{
     font-size:.75rem;
 }
 /* End footer */
+/* start product page */
+@media (min-width:992px){
+    .new-hotel{
+        width:75%;
+    }
+}
+#addHotel {
+    position:relative;
+    overflow: hidden;
+}
+.hotel{
+    position:relative;
+    left:0;
+    transition: .5s;
+}
+.room, .amenities{
+    position:absolute;
+    top:0;
+    width:100%;
+    transition: .5s;
+}
+.room{
+    left:100%;
+}
+.amenities{
+    left:200%;
+}
+/* end product page */

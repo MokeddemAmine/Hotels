@@ -620,7 +620,29 @@ $(document).ready(function(){
         $('.account-details').height($('body').height() - $('nav').height());
         $('.our-hotels').height(500);
     }
+    // use popover
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+    
+})
 
-    
-    
+$(document).ready(function(){
+    // slide element in create new hotel
+    $('#from-hotel-to-room, #from-amenities-to-room').click(function(){
+        $('.hotel').css('left','-100%');
+        $('.room').css('left','0');
+        $('.amenities').css('left','100%');
+    })
+    $('#from-room-to-hotel').click(function(){
+
+        $('.hotel').css('left','0');
+        $('.room').css('left','100%');
+        $('.amenities').css('left','200%');
+    })
+    $('#from-room-to-amenities').click(function(){
+
+        $('.hotel').css('left','-200%');
+        $('.room').css('left','-100%');
+        $('.amenities').css('left','0');
+    })
 })

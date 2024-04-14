@@ -67,10 +67,16 @@
                 RoomID INT AUTO_INCREMENT NOT NULL,
                 Type VARCHAR(20) NOT NULL,
                 Description TEXT NOT NULL,
+                Beds TINYINT DEFAULT 1,
+                Kitchens TINYINT DEFAULT 1,
+                Bathrooms TINYINT DEFAULT 1,
+                Photo   TEXT,
+                Price FLOAT NOT NULL,
+                Currency VARCHAR(5) NOT NULL,
                 rate Float,
                 HotelID INT NOT NULL,
                 CONSTRAINT RoomPK PRIMARY KEY (RoomID),
-                CONSTRAINT ROOMFK FOREIGN KEY (HotelID) REFERENCES Hotels (HotelID)
+                CONSTRAINT ROOMFK FOREIGN KEY (HotelID) REFERENCES Hotels (HotelID) ON UPDATE CASCADE ON DELETE CASCADE
             )');
             $query->execute();
             $query = $pdo->prepare('CREATE TABLE Amenities(
@@ -79,10 +85,11 @@
                 Breakfast TINYINT DEFAULT 0,
                 Parking TINYINT DEFAULT 0,
                 Fitness TINYINT DEFAULT 0,
+                Pool    TINYINT DEFAULT 0,
                 24H_FrontDesk TINYINT DEFAULT 0,
                 RoomService TINYINT DEFAULT 0,
                 Housekeeping TINYINT DEFAULT 0,
-                   AirConditioning TINYINT DEFAULT 0,
+                AirConditioning TINYINT DEFAULT 0,
                 InRoom TINYINT DEFAULT 0,
                 BusinessCenter TINYINT DEFAULT 0,
                 Restaurant TINYINT DEFAULT 0,
@@ -90,7 +97,7 @@
                 Laundry TINYINT DEFAULT 0,
                 HotelID INT NOT NULL,
                 CONSTRAINT AmenitiesPK PRIMARY KEY (AmenityID),
-                CONSTRAINT AmenitiesFK FOREIGN KEY (HotelID) REFERENCES Hotels (HotelID)
+                CONSTRAINT AmenitiesFK FOREIGN KEY (HotelID) REFERENCES Hotels (HotelID) ON UPDATE CASCADE ON DELETE CASCADE
             )');
             $query->execute();
         }
