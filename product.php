@@ -2,10 +2,12 @@
     ob_start();
     session_start();
     $pageTitle = 'Products';
+    
+    $page = isset($_GET['do'])?$_GET['do']:'manage';
+    
     if(isset($_SESSION['username'])){
         include 'init.php';
         global $getUser;
-        $page = isset($_GET['do'])?$_GET['do']:'manage';
         if($getUser->Type == 'customer'){
             redirectPage();
         }else{
@@ -16,8 +18,41 @@
                         <h2 class="text-uppercase text-center text-second-color">our hotels</h2>
                         <?php
                             $getHotels = query('select','Hotels',['*'],[$getUser->UserID],['UserID']);
+                            
                             if($getHotels->rowCount()){
+                                $hotels = $getHotels->fetchAll(PDO::FETCH_ASSOC);
+                                
+                                ?>
+                                    <div id="carouselHotels" class="carousel slide">
+                                        <div class="carousel-inner">
+                                            <?php
+                                                for($i = 0;$i < count($hotels); $i++){
+                                                    $getPriceRoom = query('select','Rooms',['Price','Currency'],[$hotels[$i]['HotelID']],['HotelID'],'RoomID','DESC',1)->fetchObject();
+                                                    ?>
+                                                    <div class="hotel-details" style="display: none;">
+                                                        <div class="photo"><?php $photo = json_decode($hotels[$i]['Photos'])[0]; echo $getUser->Username.'/'. $photo ?></div>
+                                                        <span class="name"><?= $hotels[$i]['Name'] ?></span>
+                                                        <span class="state"><?= $hotels[$i]['State'] ?></span>
+                                                        <span class="price"><?= $getPriceRoom->Price ?> <?= $getPriceRoom->Currency ?></span>
+                                                        <span class="hotelID"><?= $hotels[$i]['HotelID']; ?></span>
+                                                    </div>
+                                                    <?php
+                                                }
+                                            ?>
+                                        </div>
+                                        <button class="carousel-control ccl" type="button" data-bs-target="#carouselHotels" data-bs-slide="prev">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control ccr" type="button" data-bs-target="#carouselHotels" data-bs-slide="next">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
+                                <?php
+                                while($hotel = $getHotels->fetchObject()){
 
+                                }
                             }else{
                                 echo '<p class="text-center">There are no hotel added yet</p>';
                             }
@@ -438,10 +473,92 @@
             }
             echo '</div>';
         }
-    }else{
-        redirectPage();
     }
-
+    if($page == 'showHotel'){
+        echo '<div class="container pt-4">';
+            $hotelid = isset($_GET['hotelid']) && is_numeric($_GET['hotelid'])?$_GET['hotelid']:0;
+            $verifyHotel = query('select','Hotels INNER JOIN Users ON Hotels.UserID = Users.UserID',['Hotels.*','Users.Username'],[$hotelid],['HotelID']);
+            if($verifyHotel->rowCount()){
+                $getHotel = $verifyHotel->fetchObject();
+                // get all rooms relation with the current hotel
+                $getRooms = query('select','Rooms',['*'],[$getHotel->HotelID],['HotelID']);
+                if($getRooms->rowCount()){
+                    $getRooms = $getRooms->fetchAll(PDO::FETCH_ASSOC);
+                }else{
+                    $getRooms = NULL;
+                }
+                // get amenities relation with the hotel
+                $getAmenities = query('select','Amenities',['*'],[$getHotel->HotelID],['HotelID'])->fetchObject();
+                
+                // get array of hotel photos
+                $getHotelPhotos = json_decode($getHotel->Photos);
+                
+                $photoNum = count($getHotelPhotos);
+                if($photoNum){
+                    echo '<div class="row hotelPhotos" type="button" data-bs-toggle="modal" data-bs-target="#hotelPhotosModal">';
+                    if($photoNum < 5){
+                        foreach($getHotelPhotos as $photo){
+                            echo '<div class="col-12 col-md-6 col-xl mb-3">';
+                                echo '<img src="layout/imgs/'.$getHotel->Username.'/'.$photo.'" class="w-100 h-100"/>';
+                            echo '</div>';
+                        }
+                        
+                    }else{
+                        echo '<div class="col-12 col-md-6">';
+                            echo '<img src="layout/imgs/'.$getHotel->Username.'/'.$getHotelPhotos[0].'" class="w-100 h-100"/>';
+                        echo '</div>';
+                        echo '<div class="col-12 col-md-6">';
+                            echo '<div class="row">';
+                        for($i = 1;$i < 5 ; $i ++){
+                                    echo '<div class="col-6 my-2"'; 
+                                        if($i == 4){
+                                            echo 'style="position:relative"';
+                                        }
+                                    echo '>';
+                                        echo '<img src="layout/imgs/'.$getHotel->Username.'/'.$getHotelPhotos[$i].'" class="w-100 h-100"/>';
+                                        if($i == 4){
+                                            echo '<button class="btn btn-sm btn-dark" style="position:absolute;bottom:1rem;right:1rem;"><i class="fa-regular fa-images"></i> '.$photoNum - 5 .'+</button>';
+                                        }
+                                    echo '</div>';
+                        }
+                            echo '</div>';
+                        echo '</div>';
+                    }
+                    echo '</div>';
+                    ?>
+                        <div class="modal fade" id="hotelPhotosModal" tabindex="-1" aria-labelledby="hotelPhotosModal" aria-hidden="true">
+                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="hotelPhotosModal"><?= $getHotel->Name ?></h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <?php
+                                            foreach($getHotelPhotos as $photo){
+                                                echo '<div class="col-12 col-md-6 mb-3">';
+                                                    echo '<img src="layout/imgs/'.$getHotel->Username.'/'.$photo.'" class="w-100 h-100"/>';
+                                                echo '</div>';
+                                            }
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary reserve-room-btn">Reserve a room</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                }
+            }else{
+                echo '<div class="alert alert-info mt-5">This hotel is not exist</div>';
+                redirectPage('index.php',3);
+            }
+        echo '</div>';
+    }
     include $templates . 'footer.php';
     ob_end_flush();
 ?>

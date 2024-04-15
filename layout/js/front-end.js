@@ -618,7 +618,7 @@ $(document).ready(function(){
     // repare the height of the info details in account.php
     if($('body').width() >= 768){
         $('.account-details').height($('body').height() - $('nav').height());
-        $('.our-hotels').height(500);
+        //$('.our-hotels').height(500);
     }
     // use popover
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
@@ -645,4 +645,83 @@ $(document).ready(function(){
         $('.room').css('left','-100%');
         $('.amenities').css('left','0');
     })
+
+    // print the hotels product in product page for user
+    let arrayHotels = [];
+    // get hotels details from product page
+    $('.our-hotels .hotel-details').each(function(){
+        var hotelArr = {};
+        hotelArr.id     = $(this).find('.hotelID').text();
+        hotelArr.photo  = $(this).find('.photo').text();
+        hotelArr.name   = $(this).find('.name').text();
+        hotelArr.state  = $(this).find('.state').text();
+        hotelArr.price  = $(this).find('.price').text();
+        arrayHotels.push(hotelArr);
+    })
+    console.log(arrayHotels);
+    // delete the info from products 
+    $('.our-hotels .carousel-inner .hotel-details').remove();
+    // set new design to product page
+    for(let i = 0;i < arrayHotels.length ; i++){
+        let active = i==0?'active':'';
+        var hotelDetail;
+        if(screen.width < 992){
+            hotelDetail = `
+                <div class="carousel-item ${active}">
+                    <a href="?do=showHotel&hotelid=${arrayHotels[i].id}" class="text-dark text-decoration-none">
+                        <div class="card">
+                            <img src="layout/imgs/${arrayHotels[i].photo}" class="card-img-top" style="height:400px;object-fit:contain;">
+                            <div class="card-body">
+                                <h5 class="card-title">${arrayHotels[i].name}</h5>
+                                <h6 class="card-title">${arrayHotels[i].state}</h6>
+                                <h6 class="card-text m-0">${arrayHotels[i].price}</h6>
+                                <p class="card-text m-0">per night</p>
+                                <p class="card-text m-0">includes taxes & fees</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `
+            $('.our-hotels .carousel-inner').append(hotelDetail);
+        }else{
+            if(i%2 == 0){
+                hotelDetail = `
+                <div class="carousel-item ${active}">
+                    <div class="row">`;
+            }
+            hotelDetail += `
+                        <div class="col">
+                            <a href="?do=showHotel&hotelid=${arrayHotels[i].id}" class="text-dark text-decoration-none">
+                                <div class="card mx-3 p-2">
+                                    <img src="layout/imgs/${arrayHotels[i].photo}" class="card-img-top" style="height:400px;object-fit:contain;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${arrayHotels[i].name}</h5>
+                                        <h6 class="card-title">${arrayHotels[i].state}</h6>
+                                        <h6 class="card-text m-0">${arrayHotels[i].price}</h6>
+                                        <p class="card-text m-0">per night</p>
+                                        <p class="card-text m-0">includes taxes & fees</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+            `;
+            if(i%2 == 1){
+                hotelDetail += `
+                        </div>
+                    </div>
+                `
+                $('.our-hotels .carousel-inner').append(hotelDetail);
+            }
+            if(i+1 == arrayHotels.length){
+                hotelDetail +=`
+                    <div class="col"></div>
+                    </div>
+                    </div>
+                `;
+                $('.our-hotels .carousel-inner').append(hotelDetail);
+            }
+            
+        }
+        
+    }
 })

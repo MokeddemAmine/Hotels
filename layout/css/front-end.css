@@ -168,7 +168,7 @@
     bottom:0;
     left:.5rem;
 }
-#carouselDiscover, #carouselPerfectPlaces{
+#carouselDiscover, #carouselPerfectPlaces, #carouselHotels{
     position:relative;
 }
 .carousel-control{
@@ -181,6 +181,10 @@
     background-color: white;
     display:none;
     transition: 1s display;
+}
+#carouselHotels .carousel-control{
+    background-color: rgb(197, 192, 192);
+    color:white;
 }
 .ccl{
     left:0;
