@@ -50,9 +50,6 @@
                                         </button>
                                     </div>
                                 <?php
-                                while($hotel = $getHotels->fetchObject()){
-
-                                }
                             }else{
                                 echo '<p class="text-center">There are no hotel added yet</p>';
                             }
@@ -460,7 +457,7 @@
                         // add room to database
                         $addRoom = query('insert','Rooms',['Type','Description','Beds','Kitchens','Bathrooms','Photo','Price','Currency','HotelID'],[$type,$roomDesc,$beds,$kitchens,$bathrooms,$roomimagesUpload,$price,$currency,$CurrentHotelId]);
                         // add amenitites to database
-                        $addAmenities = query('insert','Amenities',['Wifi','Breakfast','Parking','Fitness','Pool','24H_FrontDesk','RoomService','Housekeeping','AirConditioning','InRoom','BusinessCenter','Restaurant','PetFriendly','Laundry','HotelID'],[$wifi,$breakfast,$parking,$fitness,$pool,$frontdesk,$roomservice,$housekeeping,$airconditioning,$inroom,$businesscenter,$restaurant,$petfriendly,$laundry,$CurrentHotelId]);
+                        $addAmenities = query('insert','Amenities',['Wifi','Breakfast','Parking','Fitness','Pool','H24_FrontDesk','RoomService','Housekeeping','AirConditioning','InRoom','BusinessCenter','Restaurant','PetFriendly','Laundry','HotelID'],[$wifi,$breakfast,$parking,$fitness,$pool,$frontdesk,$roomservice,$housekeeping,$airconditioning,$inroom,$businesscenter,$restaurant,$petfriendly,$laundry,$CurrentHotelId]);
                         echo '<div class="alert alert-success my-5">Hotel added with success</div>';
                         redirectPage('product.php',3);
                         
@@ -489,11 +486,31 @@
                 }
                 // get amenities relation with the hotel
                 $getAmenities = query('select','Amenities',['*'],[$getHotel->HotelID],['HotelID'])->fetchObject();
-                
+
                 // get array of hotel photos
                 $getHotelPhotos = json_decode($getHotel->Photos);
-                
+
+                // get array of rooms photos
+                $getRoomsPhotos = array();
+                if($getRooms){
+                    foreach($getRooms as $room){
+                        $getphotoRoom = json_decode($room['Photo']);
+                        if(count($getphotoRoom)){
+                            foreach($getphotoRoom as $photo){
+                                array_push($getRoomsPhotos,$photo);
+                            }
+                        }  
+                    }
+                }
+                // add rooms photo to hotels photo
+                if(count($getRoomsPhotos)){
+                    foreach($getRoomsPhotos as $photo){
+                        array_push($getHotelPhotos,$photo);
+                    }
+                }
+                // count of hotel photos
                 $photoNum = count($getHotelPhotos);
+
                 if($photoNum){
                     echo '<div class="row hotelPhotos" type="button" data-bs-toggle="modal" data-bs-target="#hotelPhotosModal">';
                     if($photoNum < 5){
@@ -536,11 +553,11 @@
                                 <div class="modal-body">
                                     <div class="row">
                                         <?php
-                                            foreach($getHotelPhotos as $photo){
-                                                echo '<div class="col-12 col-md-6 mb-3">';
-                                                    echo '<img src="layout/imgs/'.$getHotel->Username.'/'.$photo.'" class="w-100 h-100"/>';
-                                                echo '</div>';
-                                            }
+                                        foreach($getHotelPhotos as $photo){
+                                            echo '<div class="col-12 col-md-6 mb-3">';
+                                                echo '<img src="layout/imgs/'.$getHotel->Username.'/'.$photo.'" class="w-100 h-100"/>';
+                                            echo '</div>';
+                                        }
                                         ?>
                                     </div>
                                 </div>
@@ -551,8 +568,215 @@
                                 </div>
                             </div>
                         </div>
+                        
                     <?php
                 }
+                ?>
+                <div class="text-end my-3">
+                    <button class="btn btn-main btn-sm">Reserve a room</button>
+                </div>
+                <hr class="my-3">
+                <div class="hotel-content">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <h2 class="text-capitalize"><?= $getHotel->Name ?></h2>
+                            <div class="stars">
+                                <i class="fa-solid fa-star text-warning"></i>
+                                <i class="fa-solid fa-star text-warning"></i>
+                                <i class="fa-solid fa-star text-warning"></i>
+                                <i class="fa-solid fa-star text-warning"></i>
+                                <i class="fa-solid fa-star text-warning"></i>
+                            </div>
+                            <div class="description my-2">
+                                <?= $getHotel->Description ?>
+                            </div>
+                            <div class="reviews mt-4">
+                                <span class="bg-success py-1 px-2 mr-3 rounded text-white">9.8</span> <span class="fw-bold text-capitalize">exceptional</span>
+                                <a type="button" class="d-block text-decoration-none mt-1 text-capitalize">see all reviews</a>
+                            </div>
+                            <div class="amenity mt-4">
+                                <h6 class="text-capitalize my-3">popular amenities</h6>
+                                <?php
+                                    $amenitiesArray = array();
+                                    if($getAmenities->Wifi){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-wifi me-3 mb-2"></i> Free Wifi';
+                                    }
+                                    if($getAmenities->Breakfast){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-mug-saucer me-3 mb-2"></i> Breakfast';
+                                    }
+                                    if($getAmenities->Parking){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-square-parking me-3 mb-2"></i> Parking included';
+                                    }
+                                    if($getAmenities->Fitness){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-dumbbell me-3 mb-2"></i> Gym & fitness';
+                                    }
+                                    if($getAmenities->Pool){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-person-swimming fa-flip-horizontal me-3 mb-2"></i> Pool';
+                                    }
+                                    if($getAmenities->H24_FrontDesk){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-house-chimney me-3 mb-2"></i> Front Desk';
+                                    }
+                                    if($getAmenities->RoomService){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-bell-concierge me-3 mb-2"></i> Room service';
+                                    }
+                                    if($getAmenities->Housekeeping){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-broom me-3 mb-2"></i> House Keeping';
+                                    }
+                                    if($getAmenities->AirConditioning){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-snowflake me-3 mb-2"></i> Air Conditioning';
+                                    }
+                                    if($getAmenities->InRoom){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-toilet-paper me-3 mb-2"></i> In-Room';
+                                    }
+                                    if($getAmenities->BusinessCenter){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-briefcase me-3 mb-2"></i> Business Center';
+                                    }
+                                    if($getAmenities->Restaurant){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-utensils me-3 mb-2"></i> Restaurant';
+                                    }
+                                    if($getAmenities->PetFriendly){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-shield-dog me-3 mb-2"></i> Pet Friendly';
+                                    }
+                                    if($getAmenities->Laundry){
+                                        $amenitiesArray[] = '<i class="fa-solid fa-shirt me-3 mb-2"></i> Laundry';
+                                    }
+                                    echo '<div class="row">';
+                                    for($i = 0;$i < 6;$i++){
+                                        if($i%3 == 0){
+                                            echo '<div class="col-6">';
+                                        }
+                                                echo '<div>'.$amenitiesArray[$i].'</div>';
+                                        if(($i-2)%3 == 0){
+                                            echo '</div>';
+                                        }
+                                        if(count($amenitiesArray) == ($i + 1) && $i < 5){
+                                            echo '</div>';
+                                            break;
+                                        }
+                                    }
+                                    echo '</div>';
+                                ?>
+                                <a class="text-decoration-none text-capitalize my-2" data-bs-toggle="modal" data-bs-target="#AmenitiesModal" style="cursor:pointer;">see all</a>
+
+                                <div class="modal fade" id="AmenitiesModal" tabindex="-1" aria-labelledby="amenitiesModel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="amenitiesModel">Amenities</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4 class="text-capitalize">popular amenities</h4>
+                                            <div class="row my-3">
+                                                <?php
+                                                    $amenityCount = count($amenitiesArray);
+                                                    $i = 0;
+                                                    echo '<div class="col">';
+                                                    for($i;$i < count($amenitiesArray)/2;$i++){
+                                                        echo '<div>'.$amenitiesArray[$i].'</div>';
+                                                    }
+                                                    echo '</div>';
+                                                    echo '<div class="col">';
+                                                    for($i;$i< count($amenitiesArray);$i++){
+                                                        echo '<div>'.$amenitiesArray[$i].'</div>';
+                                                    }
+                                                    echo '</div>';
+                                                ?>
+                                            </div>
+                                            <h4 class="text-capitalize">languages</h4>
+                                            <div class="languages">
+                                                <ul class="nav-link ms-5 my-3">
+                                                    <?php
+                                                    $languages = json_decode($getHotel->Languages);
+                                                    foreach($languages as $lang){
+                                                        echo '<li class="nav-item text-capitalize">'.$lang.'</li>';
+                                                    }
+                                                    ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 text-center">
+                            <h3 class="text-capitalize">area</h3>
+                            <!-- I'm just trying the google maps here , I know it doesn't work because i don't like to share my key here 
+                            <iframe src="https://www.google.com/maps/embed/v1/search?q=<?= $getHotel->State ?>%20%<?= $getHotel->City ?>%20%<?= $getHotel->Street ?>&key=117757101650161" width="400" height="300" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+                                -->
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2543.276625806358!2d-0.12775834999999998!3d51.5073509!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487604ce3d01c477%3A0xc55eafc7b38b88a1!2sBig%20Ben!5e0!3m2!1sen!2suk!4v1645958243007!5m2!1sen!2suk" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                        <h2 class="text-capitalize my-4">rooms</h2>
+                        <div class="row rooms-hote">
+                            <?php
+                                if($getRooms){
+                                    $j = 1;
+                                    foreach($getRooms as $room){
+                                        
+                                        ?>
+                                        <div class="col-12 col-md-6 col-lg-4">
+                                            <div class="card p-0">
+                                                <div class="card-body">
+                                                    
+                                                    <?php
+                                                        $getImages = json_decode($room['Photo']);
+                                                        if(count($getImages)){
+                                                            ?>
+                                                                    <div id="carousel-room-photos<?= $j ?>" class="carousel slide w-100" style="height:200px;">
+                                                                        <div class="carousel-inner h-100">
+                                                                          <?php
+                                                                            for($i = 0;$i < count($getImages) ; $i++){
+                                                                                echo '<div class="carousel-item h-100 ';
+                                                                                if($i == 0){
+                                                                                    echo 'active';
+                                                                                }
+                                                                                echo '">';
+                                                                                    echo '<img src="layout/imgs/'.$getHotel->Username.'/'.$getImages[$i].'" class="w-100 h-100"/>';
+                                                                                echo '</div>';
+                                                                            }
+                                                                          ?>  
+                                                                        </div>
+                                                                        <button class="carousel-control ccl" type="button" data-bs-target="#carousel-room-photos<?= $j ?>" data-bs-slide="prev">
+                                                                            <i class="fa-solid fa-chevron-left"></i>
+                                                                            <span class="visually-hidden">Previous</span>
+                                                                        </button>
+                                                                        <button class="carousel-control ccr" type="button" data-bs-target="#carousel-room-photos<?= $j ?>" data-bs-slide="next">
+                                                                            <i class="fa-solid fa-chevron-right"></i>
+                                                                            <span class="visually-hidden">Next</span>
+                                                                        </button>
+                                                                    </div>
+                                                            <?php
+                                                        }
+                                                        else{
+                                                            echo '<img src="" alt="There are no images for this room"/>';
+                                                        }
+                                                    ?>
+                                                    <h4 class="card-title text-capitalize my-2"><?= $room['Type']; ?></h4>
+                                                    <?php if($getAmenities->Wifi) echo '<div style="font-size:.8rem;"><i class="fa-solid mb-2 fa-wifi"></i> Free Wifi</div>';  ?>
+                                                    <div style="font-size:.8rem;"><i class="fa-solid mb-2 fa-users"></i> Sleeps <?= $room['Beds'] ?></div>
+                                                    <div style="font-size:.8rem;"><i class="fa-solid mb-2 fa-kitchen-set"></i> Kitchen <?= $room['Kitchens'] ?></div>
+                                                    <div style="font-size:.8rem;"><i class="fa-solid mb-2 fa-sink"></i> Bathrooms <?= $room['Bathrooms'] ?></div>
+                                                    <div class="price fw-bold"><?= $room['Currency'] ?> <?= $room['Price'] ?></div>
+                                                    <div class="text-end"><button class="btn btn-main btn-sm">Reserve</button></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                        $j++;
+                                    }
+                                }else{
+                                    echo '<p> There are no rooms yet</p>';
+                                }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <?php
             }else{
                 echo '<div class="alert alert-info mt-5">This hotel is not exist</div>';
                 redirectPage('index.php',3);

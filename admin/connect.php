@@ -58,6 +58,7 @@
                 Languages TEXT NOT NULL,
                 Size INT NOT NULL,
                 Photos TEXT NOT NULL,
+                Rate Float,
                 UserID INT NOT NULL,
                 CONSTRAINT HotelsPK PRIMARY KEY (HotelID),
                 CONSTRAINT UserIDhotelFK FOREIGN KEY (UserID) REFERENCES Users (UserID) 
@@ -86,7 +87,7 @@
                 Parking TINYINT DEFAULT 0,
                 Fitness TINYINT DEFAULT 0,
                 Pool    TINYINT DEFAULT 0,
-                24H_FrontDesk TINYINT DEFAULT 0,
+                H24_FrontDesk TINYINT DEFAULT 0,
                 RoomService TINYINT DEFAULT 0,
                 Housekeeping TINYINT DEFAULT 0,
                 AirConditioning TINYINT DEFAULT 0,

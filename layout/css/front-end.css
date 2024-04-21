@@ -168,7 +168,7 @@
     bottom:0;
     left:.5rem;
 }
-#carouselDiscover, #carouselPerfectPlaces, #carouselHotels{
+#carouselDiscover, #carouselPerfectPlaces, #carouselHotels , #carousel-room-photos{
     position:relative;
 }
 .carousel-control{
@@ -188,11 +188,21 @@
 }
 .ccl{
     left:0;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(-50%);
 }
 .ccr{
     right:0;
-    transform: translateX(+50%);
+    transform: translateX(+50%) translateY(-50%);
+}
+#carousel-room-photos .ccl{
+    left:20px;
+    width:30px;
+    height:30px;
+}
+#carousel-room-photos .ccr{
+    right:20px;
+    width:30px;
+    height:30px;
 }
 .carousel:hover .carousel-control{
     display:block;

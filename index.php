@@ -48,6 +48,21 @@
             </div>
         </section>
         <section class="perfect-places my-5">
+        <?php
+                        $getPerfetHotels = query('select','Hotels',['*'],NULL,NULL,'rate','DESC',8);
+                        if($getPerfetHotels){
+                            while($hotel = $getPerfetHotels->fetchObject()){
+                                echo '<div class="hotel-perfect hotel-'.$hotel->HotelID.'" style="display:none;">';
+                                    echo '<span class="folder-photo">'.query('select','Users',['Username'],[$hotel->UserID],['UserID'])->fetchObject()->Username.'</span>';
+                                    echo '<span class="hotel-id">'.$hotel->HotelID.'</span>';
+                                    echo '<span class="hotel-name">'.$hotel->Name.'</span>';
+                                    echo '<span class="hotel-city">'.$hotel->City.'</span>';
+                                    echo '<span class="hotel-rate">'.$hotel->Rate.'</span>';
+                                    echo '<span class="hotel-photo">'.json_decode($hotel->Photos)[0].'</span>';
+                                echo '</div>';
+                            }
+                        }
+                    ?>
             <h3 class="text-main-color">Looking for the perfect place to stay?</h3>
             <div id="carouselPerfectPlaces" class="carousel slide my-5">
                 <div class="carousel-inner">
@@ -58,22 +73,6 @@
                     <span class="visually-hidden">Previous</span>
                 </button>
                 <button class="carousel-control ccr" type="button" data-bs-target="#carouselPerfectPlaces" data-bs-slide="next">
-                    <i class="fa-solid fa-chevron-right"></i>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </section>
-        <section class="weekend my-5">
-            <h3 class="text-main-color">Get away this weekend</h3>
-            <div id="carouselWeekend" class="carousel slide my-5">
-                <div class="carousel-inner">
-                
-                </div>
-                <button class="carousel-control ccl" type="button" data-bs-target="#carouselWeekend" data-bs-slide="prev">
-                    <i class="fa-solid fa-chevron-left"></i>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control ccr" type="button" data-bs-target="#carouselWeekend" data-bs-slide="next">
                     <i class="fa-solid fa-chevron-right"></i>
                     <span class="visually-hidden">Next</span>
                 </button>
